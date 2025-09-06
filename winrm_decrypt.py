@@ -228,8 +228,15 @@ def main():
                 auth_token = base64.b64decode(b64_token)
 
             elif hasattr(cap.http, 'www_authenticate'):
-                b64_token = cap.http.www_authenticate.split(' ')[1]
-                auth_token = base64.b64decode(b64_token)
+                parts = cap.http.www_authenticate.split(' ')
+                if len(parts) > 1:
+                    b64_token = parts[1]
+                    try:
+                        auth_token = base64.b64decode(b64_token)
+                    except Exception:
+                        continue
+                else:
+                    continue
 
             context = None
             if auth_token:
