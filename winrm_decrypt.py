@@ -145,8 +145,14 @@ def hmac_md5(key, data):
     return hmac.new(key, data, digestmod=hashlib.md5).digest()
 
 
-def md4(m):
-    return hashlib.new('md4', m).digest()
+def md4(m: bytes) -> bytes:
+    if sys.platform.startswith("win"):
+        return hashlib.new('md4', m).digest()
+    else:
+        from Crypto.Hash import MD4
+        h = MD4.new()
+        h.update(m)
+        return h.digest()
 
 
 def md5(m):
