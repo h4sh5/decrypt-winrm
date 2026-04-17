@@ -27,6 +27,7 @@ import binascii
 import sys
 import struct
 import xml.dom.minidom
+from Crypto.Hash import MD4
 
 from cryptography.hazmat.primitives.ciphers import (
     algorithms,
@@ -146,7 +147,9 @@ def hmac_md5(key, data):
 
 
 def md4(m):
-    return hashlib.new('md4', m).digest()
+    h = MD4.new()
+    h.update(m)
+    return h.digest()
 
 
 def md5(m):
