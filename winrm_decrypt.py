@@ -256,7 +256,11 @@ def main():
 
             if hasattr(cap.http, 'file_data'):
                 if not context:
-                    context = next(c for c in contexts if c.port == unique_port)
+                    context = next((c for c in contexts if c.port == unique_port), None)
+
+                if not context:
+                    print("No security context found for port %s, skipping frame %s" % (unique_port, cap.number), file=sys.stderr)
+                    continue
 
                 if not context.complete:
                     raise ValueError("Cannot decode message without completed context")
